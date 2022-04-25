@@ -8,6 +8,14 @@ export default function TableFilter() {
     filterByNumericValues,
     setFilterByNumericValues } = useContext(PlanetContext);
 
+  const [columns, setColumns] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+
   const [ActualFilter, setActualFilter] = useState({
     column: 'population',
     comparison: 'maior que',
@@ -30,16 +38,28 @@ export default function TableFilter() {
       setFilterByNumericValues((prevState) => (
         [...prevState, ActualFilter]
       ));
+      const filter = columns.filter((el) => el !== ActualFilter.column);
+      setColumns(filter);
     }
   };
 
   const removeFilter = ({ target }) => {
     const filter = filterByNumericValues.filter((el) => el.column !== target.id);
     setFilterByNumericValues(filter);
+    setColumns((prevState) => (
+      [...prevState, target.id]
+    ));
   };
 
   const removeAllFilters = () => {
     setFilterByNumericValues([]);
+    setColumns([
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ]);
   };
 
   return (
@@ -64,11 +84,9 @@ export default function TableFilter() {
               (prevState) => ({ ...prevState, column: value }),
             ) }
           >
-            <option value="population">population</option>
-            <option value="orbital_period">orbital_period</option>
-            <option value="diameter">diameter</option>
-            <option value="rotation_period">rotation_period</option>
-            <option value="surface_water">surface_water</option>
+            {columns.map((element) => (
+              <option key={ element } value={ element }>{element}</option>
+            ))}
           </select>
         </div>
         <div className="select">
