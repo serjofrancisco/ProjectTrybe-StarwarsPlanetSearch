@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
+import Table from './components/Table';
+import TableFilter from './components/TableFilter';
+import PlanetProvider from './contexts/PlanetProvider';
 
-function App() {
+export default function App() {
   return (
-    <span>Hello, App!</span>
+    <PlanetProvider>
+      <TableFilter />
+      <Table />
+    </PlanetProvider>
   );
 }
-
-export default App;
