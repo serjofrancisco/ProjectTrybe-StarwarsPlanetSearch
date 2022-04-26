@@ -22,25 +22,13 @@ export default function TableFilter() {
     value: 0,
   });
 
-  const testEquality = () => {
-    let result = false;
-    const currentFilter = Object.values(ActualFilter);
-    filterByNumericValues.forEach((el) => {
-      if (Object.values(el)[0] === currentFilter[0]) { result = true; }
-    });
-    return result;
-  };
-
   const addFilterByValues = (e) => {
     e.preventDefault();
-    const teste = testEquality();
-    if (teste === false) {
-      setFilterByNumericValues((prevState) => (
-        [...prevState, ActualFilter]
-      ));
-      const filter = columns.filter((el) => el !== ActualFilter.column);
-      setColumns(filter);
-    }
+    setFilterByNumericValues((prevState) => (
+      [...prevState, ActualFilter]
+    ));
+    const filter = columns.filter((el) => el !== ActualFilter.column);
+    setColumns(filter);
   };
 
   const removeFilter = ({ target }) => {

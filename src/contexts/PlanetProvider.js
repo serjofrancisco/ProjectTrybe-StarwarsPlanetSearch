@@ -8,6 +8,7 @@ export default function Provider({ children }) {
   const [search, setSearch] = useState([]);
   const [filterByName, setFilterByName] = useState('');
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [order, setOrder] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -34,8 +35,19 @@ export default function Provider({ children }) {
           }
         },
       ));
-    setSearch(Filter);
-  }, [data, filterByName, filterByNumericValues]);
+    let sorted = [];
+    if (order.column) {
+      const { column, sort } = order;
+      sorted = Filter.sort((a, b) => (
+        sort === 'ASC'
+          ? Number(a[column]) - Number(b[column])
+          : Number(b[column]) - Number(a[column])
+      ));
+    } else {
+      sorted = Filter.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    setSearch(sorted);
+  }, [data, filterByName, filterByNumericValues, order]);
 
   Provider.propTypes = {
     children: PropTypes.node.isRequired,
@@ -49,6 +61,8 @@ export default function Provider({ children }) {
         filterByName,
         filterByNumericValues,
         setFilterByNumericValues,
+        setOrder,
+        order,
       } }
     >
       {children}
